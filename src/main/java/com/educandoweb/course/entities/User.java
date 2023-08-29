@@ -1,12 +1,17 @@
 package com.educandoweb.course.entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity                     // BANCO H2 É UM BANCO RELACIONAL EM MEMÓRIA 
@@ -14,13 +19,18 @@ import jakarta.persistence.Table;
 public class User implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
-	@Id                         //estes 2 @ é para geração automática da chave Id
+	@Id   //estes 2 @ é para geração automática da chave Id e dizer que é Banco de Dados
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String name;
 	private String email;
 	private String phone;
 	private String password;
+	
+	@JsonIgnore  // faz com que eu não traga todos os pedidos dos clientes - evita o loop nas consultas 
+	@OneToMany(mappedBy = "client")  // um usuário tem muitos pedidos indexados pelo client
+	private List<Order> orders = new ArrayList<>();
+	
 	
 	public User() {
 	}
@@ -65,6 +75,11 @@ public class User implements Serializable {
 		this.password = password;
 	}
 
+	public List<Order> getOrders() {
+		return orders;
+	}
+	
+	
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);
@@ -87,9 +102,8 @@ public class User implements Serializable {
 		return "User [id=" + id + ", name=" + name + ", email=" + email + ", phone=" + phone + ", password=" + password
 				+ "]";
 	}
-	
-	
 
+	
 }
 
 /*  SQL QUE ELE GERA PARA CLIAR A TABELA USER
