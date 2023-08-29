@@ -14,7 +14,7 @@ import jakarta.persistence.Table;
 public class User implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
-	@Id
+	@Id                         //estes 2 @ é para geração automática da chave Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	private String name;
