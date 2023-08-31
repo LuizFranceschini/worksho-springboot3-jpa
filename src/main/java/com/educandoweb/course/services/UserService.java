@@ -27,5 +27,9 @@ public class UserService {
     public User insert (User obj) {    // operação básica para inserir no Banco de dados
     	return repository.save(obj);
     }
+    
+    public void delete (Long id) {   
+    	repository.deleteById(id);
+    }
 }
 
